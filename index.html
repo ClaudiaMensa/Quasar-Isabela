@@ -1,0 +1,178 @@
+HTML
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aventura na Trigonometria</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+        h1, h2 {
+            color: #4a4a4a;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .section {
+            display: none;
+        }
+        .section.active {
+            display: block;
+        }
+        .diagram {
+            margin: 20px auto;
+        }
+        .quiz-option {
+            background-color: #e9ecef;
+            border: 1px solid #ced4da;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            text-align: left;
+        }
+        .quiz-option:hover {
+            background-color: #d1e7dd;
+        }
+        .quiz-option.correct {
+            background-color: #28a745;
+            color: white;
+        }
+        .quiz-option.incorrect {
+            background-color: #dc3545;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="intro-screen" class="section active">
+            <h1>Aventura na Trigonometria: Desvendando os Triângulos!</h1>
+            <p>Olá! Quer entender um pouco sobre o universo dos buracos de minhoca, mas não sabe por onde começar? A trigonometria é o seu ponto de partida! Vamos juntos desvendar como os triângulos podem nos ajudar a mapear o espaço.</p>
+            <button onclick="showSection('module1')">Começar a Aventura</button>
+        </div>
+
+        <div id="module1" class="section">
+            <h2>O Que É Trigonometria?</h2>
+            <p>A palavra **trigonometria** significa 'medida de triângulos'. Pense nela como a GPS do universo! Ela nos ajuda a entender a relação entre os lados e os ângulos dos triângulos. Esse conhecimento é essencial para tudo, desde a construção de edifícios até a navegação espacial.</p>
+            <button onclick="showSection('module2')">Próximo</button>
+        </div>
+
+        <div id="module2" class="section">
+            <h2>O Herói da História: O Triângulo Retângulo</h2>
+            <p>Aqui estão os elementos de um triângulo retângulo. Clique em cada um para saber mais!</p>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Tri%C3%A2ngulo_Ret%C3%A2ngulo.png" alt="Diagrama de um triângulo retângulo" class="diagram">
+            <p><strong>Hipotenusa:</strong> O lado mais longo, oposto ao ângulo de 90°.</p>
+            <p><strong>Cateto Oposto:</strong> O lado de frente para o ângulo de referência.</p>
+            <p><strong>Cateto Adjacente:</strong> O lado ao lado do ângulo de referência.</p>
+            <button onclick="showSection('module3')">Avançar</button>
+        </div>
+
+        <div id="module3" class="section">
+            <h2>As Funções Mágicas</h2>
+            <div>
+                <h3>Seno</h3>
+                <p>$$sen(\alpha) = \frac{\text{cateto oposto}}{\text{hipotenusa}}$$</p>
+                <p>O **seno** relaciona a altura do triângulo com sua inclinação. É a razão entre o lado de frente para o ângulo e a hipotenusa.</p>
+            </div>
+            <div>
+                <h3>Cosseno</h3>
+                <p>$$cos(\alpha) = \frac{\text{cateto adjacente}}{\text{hipotenusa}}$$</p>
+                <p>O **cosseno** relaciona a base do triângulo com sua inclinação. É a razão entre o lado ao lado do ângulo e a hipotenusa.</p>
+            </div>
+            <div>
+                <h3>Tangente</h3>
+                <p>$$tan(\alpha) = \frac{\text{cateto oposto}}{\text{cateto adjacente}}$$</p>
+                <p>A **tangente** é a 'declividade' do triângulo. É a razão entre o lado de frente e o lado ao lado do ângulo.</p>
+            </div>
+            <button onclick="showSection('quiz')">Estou pronto para o Quiz!</button>
+        </div>
+
+        <div id="quiz" class="section">
+            <h2>Hora do Quiz!</h2>
+            <div id="question1" class="quiz-question">
+                <h3>1. Qual é o nome do lado mais longo de um triângulo retângulo?</h3>
+                <div class="quiz-option" data-correct="false" onclick="checkAnswer(this, 'question1')">a) Cateto</div>
+                <div class="quiz-option" data-correct="true" onclick="checkAnswer(this, 'question1')">b) Hipotenusa</div>
+                <div class="quiz-option" data-correct="false" onclick="checkAnswer(this, 'question1')">c) Ângulo</div>
+            </div>
+            <div id="question2" class="quiz-question">
+                <h3>2. A fórmula do seno é a razão entre qual cateto e a hipotenusa?</h3>
+                <div class="quiz-option" data-correct="false" onclick="checkAnswer(this, 'question2')">a) Cateto Adjacente</div>
+                <div class="quiz-option" data-correct="true" onclick="checkAnswer(this, 'question2')">b) Cateto Oposto</div>
+                <div class="quiz-option" data-correct="false" onclick="checkAnswer(this, 'question2')">c) Hipotenusa</div>
+            </div>
+            <div id="question3" class="quiz-question">
+                <h3>3. Qual das seguintes fórmulas está correta?</h3>
+                <div class="quiz-option" data-correct="false" onclick="checkAnswer(this, 'question3')">a) $$tan(\alpha) = \frac{\text{cateto adjacente}}{\text{hipotenusa}}$$</div>
+                <div class="quiz-option" data-correct="false" onclick="checkAnswer(this, 'question3')">b) $$cos(\alpha) = \frac{\text{cateto oposto}}{\text{hipotenusa}}$$</div>
+                <div class="quiz-option" data-correct="true" onclick="checkAnswer(this, 'question3')">c) $$sen(\alpha) = \frac{\text{cateto oposto}}{\text{hipotenusa}}$$</div>
+            </div>
+            <button onclick="showSection('end-screen')">Ver Resultado Final</button>
+        </div>
+
+        <div id="end-screen" class="section">
+            <h2>Parabéns!</h2>
+            <p>Você concluiu a primeira parte da sua jornada na trigonometria. Agora você tem as ferramentas básicas para entender como a matemática nos ajuda a mapear e a distorcer o espaço. Continue explorando!</p>
+            <button onclick="showSection('intro-screen')">Recomeçar</button>
+        </div>
+    </div>
+
+    <script>
+        function showSection(id) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(id).classList.add('active');
+        }
+
+        function checkAnswer(selectedOption, questionId) {
+            const questionDiv = document.getElementById(questionId);
+            const options = questionDiv.querySelectorAll('.quiz-option');
+            const isCorrect = selectedOption.dataset.correct === 'true';
+
+            options.forEach(option => {
+                option.style.pointerEvents = 'none'; // Desabilita clique após a resposta
+                if (option.dataset.correct === 'true') {
+                    option.classList.add('correct');
+                }
+            });
+
+            if (!isCorrect) {
+                selectedOption.classList.add('incorrect');
+            }
+        }
+    </script>
+</body>
+</html>
