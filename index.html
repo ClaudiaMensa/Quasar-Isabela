@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quasar - Isabela: Aula 1 Trigonometria</title>
     
+    <!-- Link para a biblioteca MathJax (Renderização de Fórmulas LaTeX) -->
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
@@ -24,6 +25,7 @@
             position: fixed;
             height: 100%;
             overflow-y: auto;
+            z-index: 10;
         }
         .sidebar h2 {
             margin-top: 0;
@@ -78,10 +80,75 @@
         .quiz-option.correct {
             background-color: #28a745;
             color: white;
+            animation: pulse-correct 0.5s ease;
         }
         .quiz-option.incorrect {
             background-color: #dc3545;
             color: white;
+            animation: shake 0.5s ease;
+        }
+        .quiz-question {
+            min-height: 150px; /* Garante espaço para a pergunta e opções */
+        }
+        #quiz-result {
+            display: none;
+            text-align: center;
+            font-size: 1.2em;
+            padding: 20px;
+            border: 2px solid #007bff;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        @keyframes pulse-correct {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+
+        /* Estilos adicionais para a tabela de ângulos notáveis */
+        .notable-angles-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        .notable-angles-table th, .notable-angles-table td {
+            border: 1px solid #ddd;
+            padding: 12px 15px;
+            text-align: center;
+        }
+        .notable-angles-table th {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+        }
+        .notable-angles-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .notable-angles-table tr:hover {
+            background-color: #e9ecef;
+        }
+
+        /* Estilos para o gerador de imagem (mantido apenas para fins estéticos caso o user queira adicionar algo dinâmico depois) */
+        #diagram-generator-ui {
+            padding: 20px;
+            background-color: #e6f7ff;
+            border-radius: 8px;
+            border: 1px dashed #007bff;
+            display: none; /* Escondido por padrão, conforme solicitado */
+        }
+        .loading {
+            min-height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #007bff;
+            font-style: italic;
         }
     </style>
 </head>
@@ -90,89 +157,203 @@
     <div class="sidebar">
         <h2>Menu da Aula</h2>
         <ul>
-            <li><a href="#intro">Início</a></li>
-            <li><a href="#o-que-e">O que é Trigonometria?</a></li>
-            <li><a href="#triangulo-retangulo">O Triângulo Retângulo</a></li>
-            <li><a href="#funcoes">Seno, Cosseno e Tangente</a></li>
-            <li><a href="#circulo">O Círculo Trigonométrico</a></li>
-            <li><a href="#quiz">Quiz de Fixação</a></li>
-            <li><a href="#conclusao">Conclusão</a></li>
+            <li><a href="#intro" onclick="showSection('intro')">Início</a></li>
+            <li><a href="#o-que-e" onclick="showSection('o-que-e')">O que é Trigonometria?</a></li>
+            <li><a href="#triangulo-retangulo" onclick="showSection('triangulo-retangulo')">O Triângulo Retângulo</a></li>
+            <li><a href="#teorema-pitagoras" onclick="showSection('teorema-pitagoras')">Teorema de Pitágoras</a></li>
+            <li><a href="#circulo-detalhado" onclick="showSection('circulo-detalhado')">Círculo Trigonométrico (Graus/Rad)</a></li>
+            <!-- NOVOS ITENS DE MENU -->
+            <li><a href="#razoes-principais" onclick="showSection('razoes-principais')">3 Razões Principais (S/C/T)</a></li>
+            <li><a href="#razoes-reciprocas" onclick="showSection('razoes-reciprocas')">Razões Recíprocas</a></li>
+            <li><a href="#angulos-notaveis" onclick="showSection('angulos-notaveis')">Ângulos Notáveis</a></li>
+            <!-- FIM NOVOS ITENS DE MENU -->
+            <li><a href="#quiz" onclick="showSection('quiz'); startQuiz();">Quiz de Fixação</a></li>
+            <li><a href="#conclusao" onclick="showSection('conclusao')">Conclusão</a></li>
         </ul>
     </div>
 
     <div class="content">
 
+        <!-- Seção 1: Início -->
         <div id="intro" class="section">
             <h1>Aventura na Trigonometria: Desvendando os Triângulos!</h1>
-            <p>Olá! Quer entender um pouco sobre o universo dos buracos de minhoca, mas não sabe por onde começar? A trigonometria é o seu ponto de partida! Vamos juntos desvendar como os triângulos podem nos ajudar a mapear o espaço.</p>
+            <p>Olá! Estamos começando a nossa jornada para entender a **matemática do espaço-tempo**, uma teoria essencial para conceber conceitos complexos como os buracos de minhoca. A **trigonometria** é o ponto de partida fundamental!</p>
+            <p>Por que a trigonometria é tão importante? Ela é a linguagem que usamos para descrever formas, distâncias e ângulos. No contexto da física espacial, ela fornece as ferramentas básicas (como vetores e coordenadas) necessárias para mapear e calcular as distâncias enormes e as curvas do universo. Sem ela, conceitos avançados como a Teoria da Relatividade e a própria estrutura dos buracos de minhoca seriam impossíveis de formular. Vamos construir essa base juntos!</p>
         </div>
 
+        <!-- Seção 2: O Que É Trigonometria? -->
         <div id="o-que-e" class="section">
             <h2>O Que É Trigonometria?</h2>
             <p>A palavra **trigonometria** significa 'medida de triângulos'. Pense nela como a GPS do universo! Ela nos ajuda a entender a relação entre os lados e os ângulos dos triângulos. Esse conhecimento é essencial para tudo, desde a construção de edifícios até a navegação espacial.</p>
         </div>
 
+        <!-- Seção 3: O Triângulo Retângulo -->
         <div id="triangulo-retangulo" class="section">
             <h2>O Herói da História: O Triângulo Retângulo</h2>
-            <p>Conheça os elementos principais que vamos usar.</p>
-            <div class="diagram">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Tri%C3%A2ngulo_Ret%C3%A2ngulo.png" alt="Diagrama de um triângulo retângulo">
+            
+            <div class="definition-text">
+                <p>Um **Triângulo Retângulo** é a base de toda a trigonometria. Sua característica fundamental é possuir **apenas um ângulo interno de $$90^{\circ}$$** (o ângulo reto). Nenhum outro triângulo pode ter essa propriedade.</p>
+                <p>A soma dos três ângulos internos é sempre $$180^{\circ}$$. Como um deles é $$90^{\circ}$$, os outros dois ângulos são sempre **agudos** (menores que $$90^{\circ}$$) e são chamados de **complementares**, pois a soma deles resulta em $$90^{\circ}$$.</p>
+
+                <h3>Métricas Fundamentais (Os Lados)</h3>
+                <p>Os lados de um triângulo retângulo possuem nomes específicos que são cruciais para as fórmulas trigonométricas:</p>
+                <ul>
+                    <li><strong>Hipotenusa:</strong> É o lado mais longo do triângulo. Sempre está oposto ao ângulo de $$90^{\circ}$$. É a métrica '$$c$$' na fórmula de Pitágoras.</li>
+                    <li><strong>Catetos:</strong> São os dois lados que formam o ângulo de $$90^{\circ}$$. Eles se dividem em dois tipos, dependendo do ângulo de referência ($\alpha$ ou $\beta$):
+                        <ul>
+                            <li><strong>Cateto Oposto:</strong> O lado de frente para o ângulo de referência.</li>
+                            <li><strong>Cateto Adjacente:</strong> O lado que toca o ângulo de referência (mas não é a Hipotenusa).</li>
+                        </ul>
+                    </li>
+                </ul>
+                <p>Essas métricas são essenciais para calcular as razões trigonométricas (seno, cosseno, tangente).</p>
             </div>
-            <p><strong>Hipotenusa:</strong> O lado mais longo, oposto ao ângulo de 90°.</p>
-            <p><strong>Cateto Oposto:</strong> O lado de frente para o ângulo de referência.</p>
-            <p><strong>Cateto Adjacente:</strong> O lado ao lado do ângulo de referência.</p>
+            
+            <h3 style="margin-top: 20px;">A Magia dos Ângulos</h3>
+            <p>Aqui está a primeira "mágica" importante: a soma dos ângulos internos de <strong>qualquer</strong> triângulo é sempre $$180^{\circ}$$.</p>
+            <p>Como o triângulo retângulo já tem um ângulo de $$90^{\circ}$$ (o ângulo reto), isso significa que os outros dois ângulos (que chamamos de $\alpha$ e $\beta$ na figura) são **complementares**.</p>
+            <p>Sempre que você somar os dois ângulos agudos, o resultado será $$90^{\circ}$$:</p>
+            <p>$$\alpha + \beta = 90^{\circ}$$</p>
+            <p>Essa relação é vital, pois é o que faz com que o seno de um ângulo seja igual ao cosseno de seu ângulo complementar. Veja a "mágica":</p>
+            <h3>$$\text{sen}(\alpha) = \text{cos}(\beta)$$</h3>
+            <p>Este é um princípio fundamental para simplificar problemas em trigonometria!</p>
         </div>
 
-        <div id="funcoes" class="section">
-            <h2>As Funções Mágicas</h2>
+        <!-- Seção 3.5: Teorema de Pitágoras -->
+        <div id="teorema-pitagoras" class="section">
+            <h2>Teorema de Pitágoras: A Regra de Ouro</h2>
+            <p>O Teorema de Pitágoras é a relação fundamental entre os três lados de qualquer triângulo retângulo. Ele afirma que o quadrado da hipotenusa é igual à soma dos quadrados dos catetos.</p>
+            <p>Se '$$a$$' e '$$b$$' são os catetos e '$$c$$' é a hipotenusa, a fórmula é:</p>
+            <h3>$$a^2 + b^2 = c^2$$</h3>
+            <p>Essa fórmula permite encontrar a medida de qualquer um dos três lados de um triângulo retângulo se os outros dois forem conhecidos. É a base para a geometria e a trigonometria no plano cartesiano!</p>
+        </div>
+
+        <!-- Seção 4: Círculo Trigonométrico e Radianos -->
+        <div id="circulo-detalhado" class="section">
+            <h2>Círculo Trigonométrico e Radianos</h2>
+            <p>O **Círculo Trigonométrico** é uma representação gráfica essencial que auxilia no cálculo das razões. Ele é construído sobre o eixo de coordenadas cartesianas com centro em O e apresenta um raio unitário.</p>
+
+            <h3>Medidas de Arcos: Graus e Radianos</h3>
+            <p>A medida de um arco pode ser dada em **grau** ($$^{\circ}$$) ou **radiano** ($$rad$$). A circunferência completa é $$360^{\circ}$$.</p>
+            <p>Para o radiano, lembre-se da relação: **$$1 \text{ radiano}$$** corresponde à medida de um arco cujo comprimento é igual ao raio da circunferência.</p>
+
+            <h4>Relações Chave</h4>
+            <ul>
+                <li>$$\pi \text{ rad} = 180^{\circ}$$</li>
+                <li>$$2\pi \text{ rad} = 360^{\circ}$$</li>
+                <li>$$\frac{\pi}{2} \text{ rad} = 90^{\circ}$$</li>
+                <li>$$\frac{\pi}{3} \text{ rad} = 60^{\circ}$$</li>
+                <li>$$\frac{\pi}{4} \text{ rad} = 45^{\circ}$$</li>
+            </ul>
+
+            <h4>Exemplo de Conversão (Regra de Três)</h4>
+            <p>Para converter $30^{\circ}$ em radianos, usamos a relação $\pi \text{ rad} = 180^{\circ}$:</p>
+            <p>$$\frac{\pi \text{ rad}}{x} = \frac{180^{\circ}}{30^{\circ}} \Rightarrow x = \frac{30^{\circ} \cdot \pi \text{ rad}}{180^{\circ}} \Rightarrow x = \frac{\pi}{6} \text{ rad}$$</p>
+
+            <h3>Quadrantes e Sinais</h3>
+            <p>Ao dividir o círculo em quatro partes iguais, temos os quatro quadrantes:</p>
+            <ul>
+                <li>**1.° Quadrante:** $$0^{\circ} \text{ a } 90^{\circ}$$</li>
+                <li>**2.° Quadrante:** $$90^{\circ} \text{ a } 180^{\circ}$$</li>
+                <li>**3.° Quadrante:** $$180^{\circ} \text{ a } 270^{\circ}$$</li>
+                <li>**4.° Quadrante:** $$270^{\circ} \text{ a } 360^{\circ} (0^{\circ})$$</li>
+            </ul>
+            <p>O eixo vertical corresponde ao **seno** (y) e o eixo horizontal ao **cosseno** (x). Os sinais das funções variam de acordo com o quadrante. Por exemplo, o seno é positivo no 1.° e 2.° quadrantes (acima do eixo x) e negativo no 3.° e 4.°.</p>
+        </div>
+
+        <!-- Seção 5: 3 Razões Trigonométricas Principais -->
+        <div id="razoes-principais" class="section">
+            <h2>3 Razões Trigonométricas Principais</h2>
+            <p>As razões trigonométricas principais são as mais utilizadas no estudo do triângulo retângulo e formam a base para as razões recíprocas.</p>
+
             <div>
-                <h3>Seno</h3>
-                <p>$$sen(\alpha) = \frac{\text{cateto oposto}}{\text{hipotenusa}}$$</p>
-                <p>O **seno** é a razão entre a altura do triângulo (cateto oposto) e sua inclinação (hipotenusa).</p>
+                <h3>1. Seno ($$sen$$)</h3>
+                <p>A razão do **Seno** é definida pela relação entre o Cateto Oposto ao ângulo e a Hipotenusa.</p>
+                <p>$$\text{sen}(\alpha) = \frac{\text{cateto oposto}}{\text{hipotenusa}}$$</p>
             </div>
             <div>
-                <h3>Cosseno</h3>
-                <p>$$cos(\alpha) = \frac{\text{cateto adjacente}}{\text{hipotenusa}}$$</p>
-                <p>O **cosseno** é a razão entre a base do triângulo (cateto adjacente) e a hipotenusa.</p>
+                <h3>2. Cosseno ($$cos$$)</h3>
+                <p>A razão do **Cosseno** é definida pela relação entre o Cateto Adjacente ao ângulo e a Hipotenusa.</p>
+                <p>$$\text{cos}(\alpha) = \frac{\text{cateto adjacente}}{\text{hipotenusa}}$$</p>
             </div>
             <div>
-                <h3>Tangente</h3>
-                <p>$$tan(\alpha) = \frac{\text{cateto oposto}}{\text{cateto adjacente}}$$</p>
-                <p>A **tangente** é a 'declividade' do triângulo. É a razão entre o lado de frente e o lado ao lado do ângulo.</p>
+                <h3>3. Tangente ($$tan$$)</h3>
+                <p>A razão da **Tangente** é definida pela relação entre o Cateto Oposto e o Cateto Adjacente. Ela também pode ser expressa como a razão entre Seno e Cosseno.</p>
+                <p>$$\text{tan}(\alpha) = \frac{\text{cateto oposto}}{\text{cateto adjacente}} = \frac{\text{sen}(\alpha)}{\text{cos}(\alpha)}$$</p>
             </div>
         </div>
 
-        <div id="circulo" class="section">
-            <h2>O Círculo Trigonométrico: Uma Ferramenta Poderosa</h2>
-            <p>Para entender o seno, cosseno e tangente de ângulos como 0°, 90° e 180°, usamos o círculo trigonométrico. Ele tem um raio de 1 unidade, o que facilita os cálculos, pois a hipotenusa é sempre 1!</p>
-            <div class="image-container">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/e/e0/Trigonometry_in_a_circle.svg" alt="Diagrama de um círculo trigonométrico">
+        <!-- Nova Seção 5.5: Razões Recíprocas -->
+        <div id="razoes-reciprocas" class="section">
+            <h2>Razões Trigonométricas Recíprocas (Inversas)</h2>
+            <p>As razões recíprocas (ou inversas) são simplesmente o inverso matemático das razões principais, onde o numerador e o denominador da fração são trocados.</p>
+            <hr>
+            <div>
+                <h3>4. Cotangente ($$cot$$)</h3>
+                <p>É a recíproca da **Tangente**.</p>
+                <p>$$\text{cot}(\alpha) = \frac{\text{cateto adjacente}}{\text{cateto oposto}} = \frac{1}{\text{tan}(\alpha)} = \frac{\text{cos}(\alpha)}{\text{sen}(\alpha)}$$</p>
             </div>
-            <p>Observe como o seno é a altura (eixo Y) e o cosseno é a distância horizontal (eixo X) do ponto no círculo.</p>
+            <div>
+                <h3>5. Cossecante ($$csc$$)</h3>
+                <p>É a recíproca do **Seno**.</p>
+                <p>$$\text{csc}(\alpha) = \frac{\text{hipotenusa}}{\text{cateto oposto}} = \frac{1}{\text{sen}(\alpha)}$$</p>
+            </div>
+            <div>
+                <h3>6. Secante ($$sec$$)</h3>
+                <p>É a recíproca do **Cosseno**.</p>
+                <p>$$\text{sec}(\alpha) = \frac{\text{hipotenusa}}{\text{cateto adjacente}} = \frac{1}{\text{cos}(\alpha)}$$</p>
+            </div>
+        </div>
+        
+        <!-- Nova Seção 5.7: Ângulos Notáveis -->
+        <div id="angulos-notaveis" class="section">
+            <h2>Ângulos Notáveis ($$30^{\circ}, 45^{\circ}, 60^{\circ}$$)</h2>
+            <p>Os **ângulos notáveis** são cruciais para a trigonometria pois seus valores de Seno, Cosseno e Tangente podem ser calculados exatamente sem o uso de calculadoras, sendo derivados de triângulos especiais (equilátero e quadrado). Eles são a base de muitos exercícios.</p>
+            
+            <table class="notable-angles-table">
+                <thead>
+                    <tr>
+                        <th>Relações</th>
+                        <th>$$30^{\circ}$$</th>
+                        <th>$$45^{\circ}$$</th>
+                        <th>$$60^{\circ}$$</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Seno</td>
+                        <td>$$\frac{1}{2}$$</td>
+                        <td>$$\frac{\sqrt{2}}{2}$$</td>
+                        <td>$$\frac{\sqrt{3}}{2}$$</td>
+                    </tr>
+                    <tr>
+                        <td>Cosseno</td>
+                        <td>$$\frac{\sqrt{3}}{2}$$</td>
+                        <td>$$\frac{\sqrt{2}}{2}$$</td>
+                        <td>$$\frac{1}{2}$$</td>
+                    </tr>
+                    <tr>
+                        <td>Tangente</td>
+                        <td>$$\frac{\sqrt{3}}{3}$$</td>
+                        <td>$$1$$</td>
+                        <td>$$\sqrt{3}$$</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
 
+        <!-- Seção 6: Quiz -->
         <div id="quiz" class="section">
             <h2>Hora do Quiz!</h2>
-            <div id="question1" class="quiz-question">
-                <h3>1. Qual é o nome do lado mais longo de um triângulo retângulo?</h3>
-                <div class="quiz-option" data-correct="false" onclick="checkAnswer(this, 'question1')">a) Cateto</div>
-                <div class="quiz-option" data-correct="true" onclick="checkAnswer(this, 'question1')">b) Hipotenusa</div>
-                <div class="quiz-option" data-correct="false" onclick="checkAnswer(this, 'question1')">c) Ângulo</div>
+            <div id="quiz-container">
+                <!-- O conteúdo do quiz será carregado aqui pelo JavaScript -->
             </div>
-            <div id="question2" class="quiz-question">
-                <h3>2. A fórmula do seno é a razão entre qual cateto e a hipotenusa?</h3>
-                <div class="quiz-option" data-correct="false" onclick="checkAnswer(this, 'question2')">a) Cateto Adjacente</div>
-                <div class="quiz-option" data-correct="true" onclick="checkAnswer(this, 'question2')">b) Cateto Oposto</div>
-                <div class="quiz-option" data-correct="false" onclick="checkAnswer(this, 'question2')">c) Hipotenusa</div>
-            </div>
-            <div id="question3" class="quiz-question">
-                <h3>3. Qual das seguintes fórmulas está correta?</h3>
-                <div class="quiz-option" data-correct="false" onclick="checkAnswer(this, 'question3')">a) $$tan(\alpha) = \frac{\text{cateto adjacente}}{\text{hipotenusa}}$$</div>
-                <div class="quiz-option" data-correct="false" onclick="checkAnswer(this, 'question3')">b) $$cos(\alpha) = \frac{\text{cateto oposto}}{\text{hipotenusa}}$$</div>
-                <div class="quiz-option" data-correct="true" onclick="checkAnswer(this, 'question3')">c) $$sen(\alpha) = \frac{\text{cateto oposto}}{\text{hipotenusa}}$$</div>
+            <div id="quiz-result">
+                <!-- O resultado final aparecerá aqui -->
             </div>
         </div>
 
+        <!-- Seção 7: Conclusão -->
         <div id="conclusao" class="section">
             <h2>Parabéns!</h2>
             <p>Você concluiu a primeira parte da sua jornada na trigonometria. Agora você tem as ferramentas básicas para entender como a matemática nos ajuda a mapear e a distorcer o espaço. Continue explorando!</p>
@@ -180,22 +361,228 @@
     </div>
 
     <script>
-        function checkAnswer(selectedOption, questionId) {
-            const questionDiv = document.getElementById(questionId);
-            const options = questionDiv.querySelectorAll('.quiz-option');
-            const isCorrect = selectedOption.dataset.correct === 'true';
+        // Array com as perguntas do Quiz
+        const quizQuestions = [
+            // Perguntas 1-4 (originais)
+            {
+                question: "1. Qual é o nome do lado mais longo de um triângulo retângulo?",
+                options: ["Cateto Adjacente", "Hipotenusa", "Cateto Oposto"],
+                correctAnswerIndex: 1,
+            },
+            {
+                question: "2. A fórmula do cosseno é a razão entre qual cateto e a hipotenusa?",
+                options: ["Cateto Oposto", "Cateto Adjacente", "Tangente"],
+                correctAnswerIndex: 1,
+            },
+            {
+                question: "3. Qual a função trigonométrica que relaciona o cateto oposto com o cateto adjacente?",
+                options: ["Seno", "Cosseno", "Tangente"],
+                correctAnswerIndex: 2,
+            },
+            {
+                question: "4. Quanto é o Seno de 90° (considerando o círculo trigonométrico)?",
+                options: ["0", "1", "$$\frac{\sqrt{3}}{2}$$"],
+                correctAnswerIndex: 1,
+            },
+            // Novas perguntas adicionadas (5-20)
+            {
+                question: "5. Se os catetos de um triângulo retângulo medem 3 e 4, qual é o valor da hipotenusa?",
+                options: ["$7$", "$5$", "$12$"],
+                correctAnswerIndex: 1, // 3^2 + 4^2 = 25 -> 5
+            },
+            {
+                question: "6. Qual das razões trigonométricas é a recíproca do seno?",
+                options: ["Cossecante", "Secante", "Cotangente"],
+                correctAnswerIndex: 0, 
+            },
+            {
+                question: "7. A tangente ($\text{tan}(\alpha)$) é a razão entre qual par de funções?",
+                options: ["Cosseno / Seno", "Hipotenusa / Cateto", "Seno / Cosseno"],
+                correctAnswerIndex: 2, 
+            },
+            {
+                question: "8. Quantos graus ($\\circ$) equivalem a $\pi \\text{ radianos}$?",
+                options: ["$$180^{\circ}$$", "$$90^{\circ}$$", "$$360^{\circ}$$"],
+                correctAnswerIndex: 0, 
+            },
+            {
+                question: "9. Qual quadrante do Círculo Trigonométrico tem seno positivo (y > 0) e cosseno negativo (x < 0)?",
+                options: ["1° Quadrante", "2° Quadrante", "3° Quadrante"],
+                correctAnswerIndex: 1, 
+            },
+            {
+                question: "10. O Cateto Oposto é definido como o lado que está de frente para qual elemento?",
+                options: ["Ângulo de Referência", "Hipotenusa", "Cateto Adjacente"],
+                correctAnswerIndex: 0, 
+            },
+            {
+                question: "11. Qual o valor da Tangente de $$45^{\circ}$$ (Ângulo Notável)?",
+                options: ["$$\frac{\sqrt{3}}{3}$$", "$$\frac{\sqrt{2}}{2}$$", "$$1$$"],
+                correctAnswerIndex: 2, 
+            },
+            {
+                question: "12. Qual o valor do Cosseno de $$60^{\circ}$$ (Ângulo Notável)?",
+                options: ["$$\frac{1}{2}$$", "$$\frac{\sqrt{3}}{2}$$", "$$\frac{\sqrt{2}}{2}$$"],
+                correctAnswerIndex: 0, 
+            },
+            {
+                question: "13. Qual das razões trigonométricas é a recíproca do cosseno?",
+                options: ["Cossecante", "Cotangente", "Secante"],
+                correctAnswerIndex: 2, 
+            },
+            {
+                question: "14. Na fórmula do Teorema de Pitágoras ($$a^2 + b^2 = c^2$$), qual letra representa a Hipotenusa?",
+                options: ["$$a$$", "$$c$$", "$$b$$"],
+                correctAnswerIndex: 1, 
+            },
+            {
+                question: "15. Quantos radianos equivalem a $$90^{\circ}$$?",
+                options: ["$$\frac{\pi}{2} \text{ rad}$$", "$$\frac{\pi}{4} \text{ rad}$$", "$$\pi \text{ rad}$$"],
+                correctAnswerIndex: 0, 
+            },
+            {
+                question: "16. Se o $$\text{sen}(\alpha) = 0.6$$, qual será o valor do $$\text{cos}(\beta)$$ se $\alpha$ e $\beta$ forem ângulos complementares?",
+                options: ["0.4", "0.8", "0.6"],
+                correctAnswerIndex: 2, // sen(alpha) = cos(beta) se alpha + beta = 90
+            },
+            {
+                question: "17. Qual o valor do Seno de $$30^{\circ}$$ (Ângulo Notável)?",
+                options: ["$$\frac{\sqrt{3}}{2}$$", "$$\frac{1}{2}$$", "$$1$$"],
+                correctAnswerIndex: 1, 
+            },
+            {
+                question: "18. A Cotangente ($\text{cot}(\alpha)$) é definida como qual razão?",
+                options: ["Cateto Oposto / Hipotenusa", "Hipotenusa / Cateto Adjacente", "Cateto Adjacente / Cateto Oposto"],
+                correctAnswerIndex: 2, 
+            },
+            {
+                question: "19. Qual a principal propriedade que define um Triângulo Retângulo?",
+                options: ["Três lados iguais", "Um ângulo de $$90^{\circ}$$", "Ângulos internos somam $$360^{\circ}$$"],
+                correctAnswerIndex: 1, 
+            },
+            {
+                question: "20. O que significa a relação $$2\pi \text{ radianos}$$?",
+                options: ["Meia volta no círculo", "Um quarto do círculo", "Uma volta completa no círculo"],
+                correctAnswerIndex: 2, 
+            }
+        ];
 
-            options.forEach(option => {
-                option.style.pointerEvents = 'none'; // Desabilita clique após a resposta
-                if (option.dataset.correct === 'true') {
-                    option.classList.add('correct');
-                }
+        let currentQuestionIndex = 0;
+        let score = 0;
+        const quizContainer = document.getElementById('quiz-container');
+        const quizResult = document.getElementById('quiz-result');
+
+        // Função para mostrar a seção no layout de página única
+        function showSection(id) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.style.display = 'none';
             });
-
-            if (!isCorrect) {
-                selectedOption.classList.add('incorrect');
+            document.getElementById(id).style.display = 'block';
+            
+            // Se for a seção do quiz, iniciamos o quiz.
+            if (id === 'quiz') {
+                startQuiz();
+            }
+            
+            // Chamar MathJax para renderizar fórmulas
+            if (window.MathJax) {
+                MathJax.typeset();
             }
         }
+
+        // Função para iniciar ou reiniciar o quiz
+        function startQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            quizResult.style.display = 'none';
+            loadQuestion();
+        }
+
+        // Função para carregar a pergunta atual no container
+        function loadQuestion() {
+            if (currentQuestionIndex >= quizQuestions.length) {
+                showResults();
+                return;
+            }
+
+            const q = quizQuestions[currentQuestionIndex];
+            
+            // HTML para a pergunta
+            let questionHTML = `
+                <div class="quiz-question">
+                    <h3>${q.question}</h3>
+            `;
+
+            // HTML para as opções
+            q.options.forEach((option, index) => {
+                questionHTML += `
+                    <div class="quiz-option" data-index="${index}" onclick="checkAnswer(this, ${index})">
+                        ${option}
+                    </div>
+                `;
+            });
+
+            questionHTML += `</div>`;
+            quizContainer.innerHTML = questionHTML;
+
+            // Chamar MathJax para renderizar fórmulas após injetar o HTML
+            if (window.MathJax) {
+                MathJax.typeset([quizContainer]);
+            }
+        }
+
+        // Função para verificar a resposta
+        function checkAnswer(selectedOptionElement, selectedIndex) {
+            const q = quizQuestions[currentQuestionIndex];
+            const correctIndex = q.correctAnswerIndex;
+            const isCorrect = selectedIndex === correctIndex;
+
+            // Desabilitar todas as opções
+            quizContainer.querySelectorAll('.quiz-option').forEach(option => {
+                option.style.pointerEvents = 'none';
+            });
+
+            // Dar feedback visual
+            if (isCorrect) {
+                selectedOptionElement.classList.add('correct');
+                score++;
+            } else {
+                selectedOptionElement.classList.add('incorrect');
+                // Destacar a resposta correta
+                quizContainer.querySelector(`[data-index="${correctIndex}"]`).classList.add('correct');
+            }
+
+            // Mover para a próxima pergunta após um pequeno delay
+            setTimeout(() => {
+                currentQuestionIndex++;
+                loadQuestion();
+            }, 1500);
+        }
+
+        // Função para mostrar os resultados finais
+        function showResults() {
+            quizContainer.innerHTML = '';
+            quizResult.style.display = 'block';
+            
+            let message = '';
+            if (score === quizQuestions.length) {
+                message = "Fantástico! Você acertou todas as perguntas. Seu conhecimento em trigonometria está afiado!";
+            } else if (score >= quizQuestions.length / 2) {
+                message = `Muito bom! Você acertou ${score} de ${quizQuestions.length}. Continue revisando as fórmulas!`;
+            } else {
+                message = `Você acertou ${score} de ${quizQuestions.length}. Não desanime! Revise a seção de funções mágicas e tente novamente.`;
+            }
+
+            quizResult.innerHTML = `
+                <h3>Quiz Concluído!</h3>
+                <p>${message}</p>
+                <button onclick="startQuiz()">Tentar Novamente</button>
+                <button onclick="showSection('conclusao')">Continuar</button>
+            `;
+        }
+
+        // Garante que a primeira seção seja exibida ao carregar a página
+        window.onload = () => showSection('intro');
     </script>
 </body>
 </html>
