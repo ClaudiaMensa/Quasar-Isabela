@@ -1,55 +1,65 @@
-HTML
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aventura na Trigonometria</title>
+    <title>Quasar - Isabela: Aula 1 Trigonometria</title>
+    
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background-color: #f0f2f5;
             color: #333;
             margin: 0;
-            padding: 20px;
             display: flex;
-            flex-direction: column;
-            align-items: center;
         }
-        .container {
+        .sidebar {
+            width: 250px;
             background-color: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            max-width: 800px;
-            width: 100%;
-            text-align: center;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            height: 100%;
+            overflow-y: auto;
         }
-        h1, h2 {
+        .sidebar h2 {
+            margin-top: 0;
             color: #4a4a4a;
         }
-        button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 10px 20px;
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .sidebar ul li a {
+            display: block;
+            padding: 10px;
+            color: #007bff;
+            text-decoration: none;
             border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 20px;
+            margin-bottom: 5px;
             transition: background-color 0.3s;
         }
-        button:hover {
-            background-color: #0056b3;
+        .sidebar ul li a:hover {
+            background-color: #e9ecef;
+        }
+        .content {
+            margin-left: 270px; /* Offset para o menu lateral */
+            padding: 30px;
+            max-width: 900px;
+            width: 100%;
         }
         .section {
-            display: none;
+            background-color: #fff;
+            padding: 30px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
-        .section.active {
-            display: block;
-        }
-        .diagram {
+        .diagram, .image-container {
+            text-align: center;
             margin: 20px auto;
         }
         .quiz-option {
@@ -59,7 +69,7 @@ HTML
             margin: 10px 0;
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s, transform 0.2s;
+            transition: background-color 0.3s;
             text-align: left;
         }
         .quiz-option:hover {
@@ -76,47 +86,69 @@ HTML
     </style>
 </head>
 <body>
-    <div class="container">
-        <div id="intro-screen" class="section active">
+
+    <div class="sidebar">
+        <h2>Menu da Aula</h2>
+        <ul>
+            <li><a href="#intro">Início</a></li>
+            <li><a href="#o-que-e">O que é Trigonometria?</a></li>
+            <li><a href="#triangulo-retangulo">O Triângulo Retângulo</a></li>
+            <li><a href="#funcoes">Seno, Cosseno e Tangente</a></li>
+            <li><a href="#circulo">O Círculo Trigonométrico</a></li>
+            <li><a href="#quiz">Quiz de Fixação</a></li>
+            <li><a href="#conclusao">Conclusão</a></li>
+        </ul>
+    </div>
+
+    <div class="content">
+
+        <div id="intro" class="section">
             <h1>Aventura na Trigonometria: Desvendando os Triângulos!</h1>
             <p>Olá! Quer entender um pouco sobre o universo dos buracos de minhoca, mas não sabe por onde começar? A trigonometria é o seu ponto de partida! Vamos juntos desvendar como os triângulos podem nos ajudar a mapear o espaço.</p>
-            <button onclick="showSection('module1')">Começar a Aventura</button>
         </div>
 
-        <div id="module1" class="section">
+        <div id="o-que-e" class="section">
             <h2>O Que É Trigonometria?</h2>
             <p>A palavra **trigonometria** significa 'medida de triângulos'. Pense nela como a GPS do universo! Ela nos ajuda a entender a relação entre os lados e os ângulos dos triângulos. Esse conhecimento é essencial para tudo, desde a construção de edifícios até a navegação espacial.</p>
-            <button onclick="showSection('module2')">Próximo</button>
         </div>
 
-        <div id="module2" class="section">
+        <div id="triangulo-retangulo" class="section">
             <h2>O Herói da História: O Triângulo Retângulo</h2>
-            <p>Aqui estão os elementos de um triângulo retângulo. Clique em cada um para saber mais!</p>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Tri%C3%A2ngulo_Ret%C3%A2ngulo.png" alt="Diagrama de um triângulo retângulo" class="diagram">
+            <p>Conheça os elementos principais que vamos usar.</p>
+            <div class="diagram">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Tri%C3%A2ngulo_Ret%C3%A2ngulo.png" alt="Diagrama de um triângulo retângulo">
+            </div>
             <p><strong>Hipotenusa:</strong> O lado mais longo, oposto ao ângulo de 90°.</p>
             <p><strong>Cateto Oposto:</strong> O lado de frente para o ângulo de referência.</p>
             <p><strong>Cateto Adjacente:</strong> O lado ao lado do ângulo de referência.</p>
-            <button onclick="showSection('module3')">Avançar</button>
         </div>
 
-        <div id="module3" class="section">
+        <div id="funcoes" class="section">
             <h2>As Funções Mágicas</h2>
             <div>
                 <h3>Seno</h3>
                 <p>$$sen(\alpha) = \frac{\text{cateto oposto}}{\text{hipotenusa}}$$</p>
-                <p>O **seno** relaciona a altura do triângulo com sua inclinação. É a razão entre o lado de frente para o ângulo e a hipotenusa.</p>
+                <p>O **seno** é a razão entre a altura do triângulo (cateto oposto) e sua inclinação (hipotenusa).</p>
             </div>
             <div>
                 <h3>Cosseno</h3>
                 <p>$$cos(\alpha) = \frac{\text{cateto adjacente}}{\text{hipotenusa}}$$</p>
-                <p>O **cosseno** relaciona a base do triângulo com sua inclinação. É a razão entre o lado ao lado do ângulo e a hipotenusa.</p>
+                <p>O **cosseno** é a razão entre a base do triângulo (cateto adjacente) e a hipotenusa.</p>
             </div>
             <div>
                 <h3>Tangente</h3>
                 <p>$$tan(\alpha) = \frac{\text{cateto oposto}}{\text{cateto adjacente}}$$</p>
                 <p>A **tangente** é a 'declividade' do triângulo. É a razão entre o lado de frente e o lado ao lado do ângulo.</p>
             </div>
-            <button onclick="showSection('quiz')">Estou pronto para o Quiz!</button>
+        </div>
+
+        <div id="circulo" class="section">
+            <h2>O Círculo Trigonométrico: Uma Ferramenta Poderosa</h2>
+            <p>Para entender o seno, cosseno e tangente de ângulos como 0°, 90° e 180°, usamos o círculo trigonométrico. Ele tem um raio de 1 unidade, o que facilita os cálculos, pois a hipotenusa é sempre 1!</p>
+            <div class="image-container">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/e/e0/Trigonometry_in_a_circle.svg" alt="Diagrama de um círculo trigonométrico">
+            </div>
+            <p>Observe como o seno é a altura (eixo Y) e o cosseno é a distância horizontal (eixo X) do ponto no círculo.</p>
         </div>
 
         <div id="quiz" class="section">
@@ -139,24 +171,15 @@ HTML
                 <div class="quiz-option" data-correct="false" onclick="checkAnswer(this, 'question3')">b) $$cos(\alpha) = \frac{\text{cateto oposto}}{\text{hipotenusa}}$$</div>
                 <div class="quiz-option" data-correct="true" onclick="checkAnswer(this, 'question3')">c) $$sen(\alpha) = \frac{\text{cateto oposto}}{\text{hipotenusa}}$$</div>
             </div>
-            <button onclick="showSection('end-screen')">Ver Resultado Final</button>
         </div>
 
-        <div id="end-screen" class="section">
+        <div id="conclusao" class="section">
             <h2>Parabéns!</h2>
             <p>Você concluiu a primeira parte da sua jornada na trigonometria. Agora você tem as ferramentas básicas para entender como a matemática nos ajuda a mapear e a distorcer o espaço. Continue explorando!</p>
-            <button onclick="showSection('intro-screen')">Recomeçar</button>
         </div>
     </div>
 
     <script>
-        function showSection(id) {
-            document.querySelectorAll('.section').forEach(section => {
-                section.classList.remove('active');
-            });
-            document.getElementById(id).classList.add('active');
-        }
-
         function checkAnswer(selectedOption, questionId) {
             const questionDiv = document.getElementById(questionId);
             const options = questionDiv.querySelectorAll('.quiz-option');
